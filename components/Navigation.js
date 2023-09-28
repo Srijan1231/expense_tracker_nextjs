@@ -22,7 +22,7 @@ function Navigation() {
             <ImStatsBars />
           </div>
           <div>
-            <button className="btn btn-danger">Logout Button</button>
+            <button className="btn btn-danger">Logout</button>
           </div>
         </nav>
       </div>
