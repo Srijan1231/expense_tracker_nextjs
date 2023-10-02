@@ -9,7 +9,7 @@ function ExpenseCategoryItem({ color, title, amount }) {
             className="w-[25px] h-[25px] rounded-full "
             style={{ backgroundColor: color }}
           />
-          <h4 className="capitalize ">{title}</h4>
+          <h4 className="capitalize">{title}</h4>
         </div>
         <p>{currencyFormatter(amount)}</p>
       </div>

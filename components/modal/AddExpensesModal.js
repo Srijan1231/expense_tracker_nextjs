@@ -1,12 +1,17 @@
 import { useContext, useState } from "react";
 import Modal from "../Modal";
 import { expenseContext } from "@/lib/store/expense-context";
+import { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 function AddExpensesModal({ isOpenExpenses, setIsOpenExpenses }) {
-  const { expenses } = useContext(expenseContext);
+  const { expenses, addExpenseItem } = useContext(expenseContext);
   const [expenseAmount, setExpenseAmount] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const addExpenseItemHandler = () => {
+  const [showAddExpense, setShowAddExpense] = useState(false);
+  const titleRef = useRef();
+  const colorRef = useRef();
+  const addCategoryHandler = async () => {};
+  const addExpenseItemHandler = async () => {
     const expense = expenses.find((e) => e.id === selectedCategory);
     const newExpense = {
       color: expense.color,
@@ -21,9 +26,15 @@ function AddExpensesModal({ isOpenExpenses, setIsOpenExpenses }) {
         },
       ],
     };
-    setExpenseAmount("");
-    setSelectedCategory(null);
-    setIsOpenExpenses();
+
+    try {
+      await addExpenseItem(selectedCategory, newExpense);
+      setExpenseAmount("");
+      setSelectedCategory(null);
+      setIsOpenExpenses();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -45,7 +56,38 @@ function AddExpensesModal({ isOpenExpenses, setIsOpenExpenses }) {
       </div>
       {expenseAmount > 0 && (
         <div className="flex flex-col gap-4 mt-6">
-          <h3 className="text-2xl capitalize">Select Expense Category</h3>
+          <div>
+            <h3 className="text-2xl capitalize">Select Expense Category</h3>
+            <button
+              className="text-lime-400"
+              onClick={() => {
+                setShowAddExpense(true);
+              }}
+            >
+              + New Category
+            </button>
+          </div>
+          {showAddExpense && (
+            <div className="flex items-center justify-between">
+              <input type="text" placeholder="Enter Title" ref={titleRef} />
+              <input type="color" className="w-24 h-10" ref={colorRef} />
+              <button
+                className="btn btn-primary-outline"
+                onClick={addCategoryHandler}
+              >
+                Create
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  setShowAddExpense(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+
           {expenses.map((expense) => (
             <button
               key={expense.id}
@@ -64,9 +106,8 @@ function AddExpensesModal({ isOpenExpenses, setIsOpenExpenses }) {
                           : "none",
                       backgroundColor: expense.color,
                     }}
-                  >
-                    <h4>{expense.title}</h4>
-                  </div>
+                  />
+                  <h4 className="capitalize">{expense.title}</h4>
                 </div>
               </div>
             </button>
@@ -75,12 +116,7 @@ function AddExpensesModal({ isOpenExpenses, setIsOpenExpenses }) {
       )}
       {expenseAmount > 0 && selectedCategory && (
         <div className="mt-6">
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              addExpenseItemHandler;
-            }}
-          >
+          <button className="btn btn-primary" onClick={addExpenseItemHandler}>
             Add Expenses
           </button>
         </div>

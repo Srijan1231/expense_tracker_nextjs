@@ -5,10 +5,13 @@ import ExpenseCategoryItem from "@/components/ExpenseCategoryItem";
 import { useContext, useEffect, useState } from "react";
 
 import AddIncomeModal from "@/components/modal/AddincomeModal";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+
 import { expenseContext } from "@/lib/store/expense-context";
 import AddExpensesModal from "@/components/modal/AddExpensesModal";
-export default function Home(async) {
+ChartJS.register(ArcElement, Tooltip, Legend);
+export default function Home() {
   const { expenses, income } = useContext(expenseContext);
   const [balance, setBalance] = useState(0);
   const [isOpenExpenses, setIsOpenExpenses] = useState(false);
@@ -23,6 +26,7 @@ export default function Home(async) {
       }, 0);
     setBalance(newBalance);
   }, [expenses, income]);
+
   return (
     <>
       <AddIncomeModal
@@ -64,7 +68,7 @@ export default function Home(async) {
                 key={expense.id}
                 color={expense.color}
                 title={expense.title}
-                amount={expense.amount}
+                amount={expense.total}
               />
             ))}
           </div>
@@ -79,6 +83,7 @@ export default function Home(async) {
                   {
                     label: "Expenses",
                     data: expenses.map((expense) => expense.color),
+
                     borderColor: ["#18181b"],
                     borderWidth: 5,
                   },

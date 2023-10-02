@@ -10,7 +10,7 @@ function AddIncomeModal({ isOpenIncome, setIsOpenIncome }) {
   const { income, addIncomeItem, removeIncomeItem } =
     useContext(expenseContext);
   //handler function
-  console.log(income);
+
   const addIncomeHandler = async (e) => {
     e.preventDefault();
     const newIncome = {
