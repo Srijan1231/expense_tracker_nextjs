@@ -4,19 +4,28 @@ import { expenseContext } from "@/lib/store/expense-context";
 import { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 function AddExpensesModal({ isOpenExpenses, setIsOpenExpenses }) {
-  const { expenses, addExpenseItem } = useContext(expenseContext);
+  const { expenses, addExpenseItem, addCategory } = useContext(expenseContext);
   const [expenseAmount, setExpenseAmount] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showAddExpense, setShowAddExpense] = useState(false);
   const titleRef = useRef();
   const colorRef = useRef();
-  const addCategoryHandler = async () => {};
+  const addCategoryHandler = async () => {
+    const title = titleRef.current.value;
+    const color = colorRef.current.value;
+    try {
+      await addCategory({ title, color, total: 0 });
+      setShowAddExpense(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   const addExpenseItemHandler = async () => {
     const expense = expenses.find((e) => e.id === selectedCategory);
     const newExpense = {
       color: expense.color,
       title: expense.title,
-      total: expense.total,
+      total: expense.total + +expenseAmount,
       items: [
         ...expense.items,
         {

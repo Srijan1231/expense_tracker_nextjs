@@ -64,26 +64,22 @@ export default function Home() {
           <h3 className="text-2xl"> My Expenses</h3>
           <div className="flex flex-col gap-4 mt-6">
             {expenses.map((expense) => (
-              <ExpenseCategoryItem
-                key={expense.id}
-                color={expense.color}
-                title={expense.title}
-                amount={expense.total}
-              />
+              <ExpenseCategoryItem key={expense.id} expense={expense} />
             ))}
           </div>
         </section>
-        <section>
-          <h3>Stats</h3>
-          <div>
+
+        <section className="py-6">
+          <h3 className="text-2xl">Stats</h3>
+          <div className="w-1/2 mx-auto">
             <Doughnut
               data={{
                 labels: expenses.map((expense) => expense.title),
                 datasets: [
                   {
                     label: "Expenses",
-                    data: expenses.map((expense) => expense.color),
-
+                    data: expenses.map((expense) => expense.total),
+                    backgroundColor: expenses.map((expense) => expense.color),
                     borderColor: ["#18181b"],
                     borderWidth: 5,
                   },

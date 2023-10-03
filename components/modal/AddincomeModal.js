@@ -70,7 +70,9 @@ function AddIncomeModal({ isOpenIncome, setIsOpenIncome }) {
           <div className="flex justify-between items-center " key={i.id}>
             <div>
               <p className="font-semibold">{i.description}</p>
-              {/* <small>{i.createdAt.toISOString()}</small> */}
+              <small>
+                {i.createdAt.toISOString().slice(0, 19).replace(/T/g, " Time:")}
+              </small>
             </div>
             <p className={"flex items-center gap-2"}>
               {currencyFormatter(i.amount)}
