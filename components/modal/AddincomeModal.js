@@ -4,11 +4,13 @@ import { useContext, useRef } from "react";
 
 import { currencyFormatter } from "@/lib/utils";
 import { expenseContext } from "@/lib/store/expense-context";
+import { authContext } from "@/lib/store/auth-context";
 function AddIncomeModal({ isOpenIncome, setIsOpenIncome }) {
   const amountRef = useRef();
   const descriptionRef = useRef();
   const { income, addIncomeItem, removeIncomeItem } =
     useContext(expenseContext);
+  const { user } = useContext(authContext);
   //handler function
 
   const addIncomeHandler = async (e) => {
@@ -17,6 +19,7 @@ function AddIncomeModal({ isOpenIncome, setIsOpenIncome }) {
       amount: +amountRef.current.value,
       description: descriptionRef.current.value,
       createdAt: new Date(),
+      uid: user.uid,
     };
     try {
       await addIncomeItem(newIncome);

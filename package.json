@@ -15,6 +15,7 @@
     "react": "latest",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "latest",
+    "react-firebase-hooks": "^5.1.1",
     "react-icons": "^4.11.0",
     "uuid": "^9.0.1"
   },
